@@ -84,12 +84,12 @@
         <div class="mt-4">
             <x-input-label class="uppercase" for="plan_e" :value="__('Planeación Estratégica')" />
             <textarea wire:model="plan_e" wire:model.live="plan_e" id="plan_e" cols="15" rows="5"
-                x-on:keydown="$wire.longitud_plan_e" wire:keydown="character_count_plan_e" maxlength="600"
+                x-on:keydown="$wire.longitud_plan_e" wire:keydown="character_count_plan_e" maxlength="1200"
                 class="block mt-1 w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-lime-500 dark:focus:border-lime-600 focus:ring-lime-500 dark:focus:ring-lime-600 rounded-md shadow-sm resize-none"
                 placeholder="Es la estratégia que brinda el marco real para que tanto los Titulares, como colaboradores comprendan y evalúen la organización, alineando los esfuerzos del equipo, y evitando dejar cosas a la opinión, intuición e improvisación, lo que reduce las probabilidades de errores e incrementa las de éxito. Nota: recuerda que la tienes en la Ficha de Desempeño."></textarea>
             <div class="flex flex-row">
                 <span wire:text="longitud_plan_e"></span>
-                <p class="ml-1">cáracteres capturados de un máximo de 600</p>
+                <p class="ml-1">cáracteres capturados de un máximo de 1200</p>
             </div>
             @error('plan_e')
                 <p class="font-bold text-red-600">
@@ -101,13 +101,13 @@
         {{-- Planeacion Operativa --}}
         <div class="mt-4">
             <x-input-label class="uppercase" for="plan_o" :value="__('Planeación Operativa')" />
-            <textarea wire:model="plan_o" wire:model.live="plan_o" id="plan_o" cols="15" rows="5" maxlength="600"
+            <textarea wire:model="plan_o" wire:model.live="plan_o" id="plan_o" cols="15" rows="5" maxlength="1200"
                 x-on:keydown="$wire.longitud_plan_o" wire:keydown="character_count_plan_o"
                 class="block mt-1 w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-lime-500 dark:focus:border-lime-600 focus:ring-lime-500 dark:focus:ring-lime-600 rounded-md shadow-sm resize-none"
-                placeholder="La planificación operativa es el punto de partida para poner en práctiva las acciones y metas trazadas por el nivel táctico, con el fin de alcanzar los objetivos fijados en las decisiones estratégicas."></textarea>
+                placeholder="La planificación operativa es el punto de partida para poner en práctica las acciones y metas trazadas por el nivel táctico, con el fin de alcanzar los objetivos fijados en las decisiones estratégicas."></textarea>
             <div class="flex flex-row">
                 <span wire:text="longitud_plan_o"></span>
-                <p class="ml-1">cáracteres capturados de un máximo de 600</p>
+                <p class="ml-1">cáracteres capturados de un máximo de 1200</p>
             </div>
             <p class="font-bold text-red-600">
                 @error('plan_o')

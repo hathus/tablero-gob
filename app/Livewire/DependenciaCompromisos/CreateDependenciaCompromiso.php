@@ -56,6 +56,9 @@ class CreateDependenciaCompromiso extends Component
     #[Validate('required', message: 'El Monto del año 2026 es requerido, si no hay monto, ingrese 0')]
     public $pre_year2026;
 
+    #[Validate('required', message: 'El Monto del año 2027 es requerido, si no hay monto, ingrese 0')]
+    public $pre_year2027;
+
     /* Texto de la fase 4  Evaluacion de porcentajes*/
     #[Validate('required', message: 'El Porcentaje de Evaluación del año 2021 es requerido, si no hay porcentaje, ingrese 0')]
     public $eval_year2021;
@@ -74,6 +77,9 @@ class CreateDependenciaCompromiso extends Component
 
     #[Validate('required', message: 'El Porcentaje de Evaluación del año 2026 es requerido, si no hay porcentaje, ingrese 0')]
     public $eval_year2026;
+
+    #[Validate('required', message: 'El Porcentaje de Evaluación del año 2027 es requerido, si no hay porcentaje, ingrese 0')]
+    public $eval_year2027;
 
     /* Fase 5 Cobertura*/
     #[Validate('required', message: 'El Tipo de Cobertura es necesario')]
@@ -103,6 +109,9 @@ class CreateDependenciaCompromiso extends Component
     #[Validate('required', message: 'El Porcentaje de Evaluación del año 2026 es requerido, si no hay porcentaje, ingrese 0')]
     public $meta_year26;
 
+    #[Validate('required', message: 'El Porcentaje de Evaluación del año 2027 es requerido, si no hay porcentaje, ingrese 0')]
+    public $meta_year27;
+
     #[Validate('required', message: 'Se requiere el número de beneficiarios')]
     public $beneficiarios;
 
@@ -128,7 +137,7 @@ class CreateDependenciaCompromiso extends Component
         2 => 'Plural',
     ];
 
-    public $meta_acumulada = 0;
+    public $meta_acumulada;
 
     public $unidad_medidas_id = [];
     public $unidad_medida_sin_id;
@@ -156,6 +165,7 @@ class CreateDependenciaCompromiso extends Component
     public float $dataMY24 = 0;
     public float $dataMY25 = 0;
     public float $dataMY26 = 0;
+    public float $dataMY27 = 0;
 
     /* Datos para la fase 4 */
     public $porcentaje_cumplimiento;
@@ -165,15 +175,18 @@ class CreateDependenciaCompromiso extends Component
     public float $dataEVP24 = 0;
     public float $dataEVP25 = 0;
     public float $dataEVP26 = 0;
+    public float $dataEVP27 = 0;
 
     /* Datos Fase 5 */
     public $monto_acumulado;
+    public float $monto_acumulado_raw = 0;
     public float $dataEVM21 = 0;
     public float $dataEVM22 = 0;
     public float $dataEVM23 = 0;
     public float $dataEVM24 = 0;
     public float $dataEVM25 = 0;
     public float $dataEVM26 = 0;
+    public float $dataEVM27 = 0;
 
 
     public function render()
@@ -201,7 +214,7 @@ class CreateDependenciaCompromiso extends Component
     public function insertPMA($id)
     {
         $datos = [];
-        for ($year = 2021; $year <= 2026; $year++) {
+        for ($year = 2021; $year <= 2027; $year++) {
             $propertyMonto = "pre_year{$year}";
 
             // Debug: verificar si las propiedades existen
@@ -236,7 +249,7 @@ class CreateDependenciaCompromiso extends Component
     public function insertEPA($id)
     {
         $datosValidadosEPA = [];
-        for ($year = 2021; $year <= 2026; $year++) {
+        for ($year = 2021; $year <= 2027; $year++) {
             $propertyEvalPer = "eval_year{$year}";
 
             // Debug: verificar si las propiedades existen
@@ -278,10 +291,11 @@ class CreateDependenciaCompromiso extends Component
             2023 => '23',
             2024 => '24',
             2025 => '25',
-            2026 => '26'
+            2026 => '26',
+            2027 => '27',
         ];
 
-        for ($year = 2021; $year <= 2026; $year++) {
+        for ($year = 2021; $year <= 2027; $year++) {
             $shortYear = $yearMapping[$year];
             $propertyMetaMonto = "meta_year{$shortYear}";
 
@@ -327,7 +341,7 @@ class CreateDependenciaCompromiso extends Component
         $datosValidadosDC['tipo_cobertura'] = $this->tipo_cobertura;
         $datosValidadosDC['unidad_medida'] = $this->unidad_medida_sel_id;
         $datosValidadosDC['accion_realizada'] = $this->text_accion_realizada;
-        $datosValidadosDC['beneficiarios'] = $this->beneficiarios;
+        $datosValidadosDC['beneficiarios'] = str_replace(',', '', $this->beneficiarios);
         $datosValidadosDC['medio_verificacion'] = $this->medio_verificacion;
         $datosValidadosDC['porcentaje_cumplimiento'] = $this->porcentaje_cumplimiento;
         $datosValidadosDC['meta_acumulada'] = $this->meta_acumulada;
@@ -473,9 +487,19 @@ class CreateDependenciaCompromiso extends Component
         $this->presupuesto_acumulado();
     }
 
+    public function changeMY27Event($data)
+    {
+        $this->dataMY27 = (float) str_replace(',', '', $data);
+        if ($data === '') {
+            $data = 0;
+            $this->dataMY27 = 0;
+        }
+        $this->presupuesto_acumulado();
+    }
+
     public function presupuesto_acumulado()
     {
-        $presupuestoAcumulado = $this->dataMY21 + $this->dataMY22 + $this->dataMY23 + $this->dataMY24 + $this->dataMY25 + $this->dataMY26;
+        $presupuestoAcumulado = $this->dataMY21 + $this->dataMY22 + $this->dataMY23 + $this->dataMY24 + $this->dataMY25 + $this->dataMY26 + $this->dataMY27;
         $this->presupuesto_ejercido_raw = $presupuestoAcumulado;
         $this->presupuesto_ejercido = Number::currency($presupuestoAcumulado, in: 'MXN', locale: 'es_MX', precision: 2);
     }
@@ -541,15 +565,25 @@ class CreateDependenciaCompromiso extends Component
         $this->porcentaje_cumplimiento();
     }
 
+    public function changeEVP27Event($data)
+    {
+        $this->dataEVP27 = (float) $data;
+        if ($data === '') {
+            $data = 0;
+            $this->dataEVP27 = 0;
+        }
+        $this->porcentaje_cumplimiento();
+    }
+
     public function porcentaje_cumplimiento()
     {
-        $this->porcentaje_cumplimiento = $this->dataEVP21 + $this->dataEVP22 + $this->dataEVP23 + $this->dataEVP24 + $this->dataEVP25 + $this->dataEVP26;
+        $this->porcentaje_cumplimiento = $this->dataEVP21 + $this->dataEVP22 + $this->dataEVP23 + $this->dataEVP24 + $this->dataEVP25 + $this->dataEVP26 + $this->dataEVP27;
     }
 
     /* Funciones de la fase 5 */
     public function changeEVM21Event($data)
     {
-        $this->dataEVM21 = (float) $data;
+        $this->dataEVM21 = (float) str_replace(',', '', $data);
         if ($data === '') {
             $data = 0;
             $this->dataEVM21 = 0;
@@ -559,7 +593,7 @@ class CreateDependenciaCompromiso extends Component
 
     public function changeEVM22Event($data)
     {
-        $this->dataEVM22 = (float) $data;
+        $this->dataEVM22 = (float) str_replace(',', '', $data);
         if ($data === '') {
             $data = 0;
             $this->dataEVM22 = 0;
@@ -569,7 +603,7 @@ class CreateDependenciaCompromiso extends Component
 
     public function changeEVM23Event($data)
     {
-        $this->dataEVM23 = (float) $data;
+        $this->dataEVM23 = (float) str_replace(',', '', $data);
         if ($data === '') {
             $data = 0;
             $this->dataEVM23 = 0;
@@ -579,7 +613,7 @@ class CreateDependenciaCompromiso extends Component
 
     public function changeEVM24Event($data)
     {
-        $this->dataEVM24 = (float) $data;
+        $this->dataEVM24 = (float) str_replace(',', '', $data);
         if ($data === '') {
             $data = 0;
             $this->dataEVM24 = 0;
@@ -589,7 +623,7 @@ class CreateDependenciaCompromiso extends Component
 
     public function changeEVM25Event($data)
     {
-        $this->dataEVM25 = (float) $data;
+        $this->dataEVM25 = (float) str_replace(',', '', $data);
         if ($data === '') {
             $data = 0;
             $this->dataEVM25 = 0;
@@ -599,7 +633,7 @@ class CreateDependenciaCompromiso extends Component
 
     public function changeEVM26Event($data)
     {
-        $this->dataEVM26 = (float) $data;
+        $this->dataEVM26 = (float) str_replace(',', '', $data);
         if ($data === '') {
             $data = 0;
             $this->dataEVM26 = 0;
@@ -607,8 +641,20 @@ class CreateDependenciaCompromiso extends Component
         $this->monto_acumulado();
     }
 
+    public function changeEVM27Event($data)
+    {
+        $this->dataEVM27 = (float) str_replace(',', '', $data);
+        if ($data === '') {
+            $data = 0;
+            $this->dataEVM27 = 0;
+        }
+        $this->monto_acumulado();
+    }
+
     public function monto_acumulado()
     {
-        $this->meta_acumulada = $this->dataEVM21 + $this->dataEVM22 + $this->dataEVM23 + $this->dataEVM24 + $this->dataEVM25 + $this->dataEVM26;
+        $meta_acumulada = $this->dataEVM21 + $this->dataEVM22 + $this->dataEVM23 + $this->dataEVM24 + $this->dataEVM25 + $this->dataEVM26 + $this->dataEVM27;
+        $this->monto_acumulado_raw = $meta_acumulada;
+        $this->meta_acumulada = Number::format($meta_acumulada, precision: 0);
     }
 }
