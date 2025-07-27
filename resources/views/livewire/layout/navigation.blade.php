@@ -17,7 +17,7 @@ $logout = function (Logout $logout) {
             <div class="flex">
                 <div class="shrink-0 flex items-center">
                     <a href="{{ route('dashboard') }}" wire:navigate class="flex items-center">
-                        <img src="{{ asset('images/titulo.png') }}" alt="Título" class="h-10 w-auto" />
+                        <img src="{{ asset('images/logo_cgpi.png') }}" alt="Título" class="h-10 w-auto" />
                     </a>
                 </div>
 

@@ -56,7 +56,18 @@
         <div class="flex-col w-1/3 p-2">
             @forelse ($ejes as $eje)
                 <button
-                    class="w-full rounded p-3 uppercase mt-2 bg-azulins hover:bg-azulins/90 text-white border border-azulins shadow transition duration-200"
+                @php
+                    $eje01 = $eje->id == 1 ? 'bg-eje01' : '';
+                    $eje02 = $eje->id == 2 ? 'bg-eje02' : '';
+                    $eje03 = $eje->id == 3 ? 'bg-eje03' : '';
+                    $eje04 = $eje->id == 4 ? 'bg-eje04' : '';
+                    $eje05 = $eje->id == 5 ? 'bg-eje05' : '';
+                    $eje06 = $eje->id == 6 ? 'bg-eje06' : '';
+                    $eje07 = $eje->id == 7 ? 'bg-eje07' : '';
+                    $eje08 = $eje->id == 8 ? 'bg-eje08' : '';
+                @endphp
+                    {{-- class="w-full rounded p-3 uppercase mt-2 text-white border shadow transition duration-200" --}}
+                    @class(['w-full', 'rounded', 'p-3', 'uppercase', 'mt-2', 'text-white', 'border', 'shadow', 'transition', 'duration-200', 'rounded-lg', $eje01, $eje02, $eje03, $eje04, $eje05, $eje06, $eje07, $eje08])
                     wire:click="changeEje({{ $eje->sub_sector_numero }})">
                     @if ($eje->sub_sector_nombre === null)
                         Eje: {{ $eje->eje_numero }} {{ $eje->eje_nombre }}
