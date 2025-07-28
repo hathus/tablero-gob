@@ -14,7 +14,7 @@ class ShowDependenciaCompromiso extends Component
         $dependencia_compromisos = DependenciaCompromiso::with([
             'compromiso',
             'compromisoDependenciaIntervienen',
-        ])->get();
+        ])->where('usuario_id', '=', auth()->user()->id)->get();
 
         return view('livewire.dependencia-compromisos.show-dependencia-compromiso', [
             'dependencia_compromisos' => $dependencia_compromisos,
