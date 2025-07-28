@@ -40,7 +40,7 @@
         <label for="compromiso_numero"
             class="block mb-1 text-sm font-medium text-gray-600 dark:text-gray-300 uppercase">Número de
             compromiso</label>
-        <input id="compromiso_numero" type="number" min="1" step="0.1" wire:model.defer="compromiso_numero"
+        <input id="compromiso_numero" type="text" min="1" step="0.1" wire:model.defer="compromiso_numero"
             placeholder="Ej. 123 ó'1.2"
             class="peer w-full pl-4 pr-10 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white/70 dark:bg-gray-800/60 backdrop-blur-md text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-sky-500 focus:outline-none transition duration-200 placeholder-gray-400 dark:placeholder-gray-500" />
         <div class="absolute right-3 top-9">
