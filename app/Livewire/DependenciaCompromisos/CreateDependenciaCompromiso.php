@@ -344,7 +344,7 @@ class CreateDependenciaCompromiso extends Component
         $datosValidadosDC['beneficiarios'] = str_replace(',', '', $this->beneficiarios);
         $datosValidadosDC['medio_verificacion'] = $this->medio_verificacion;
         $datosValidadosDC['porcentaje_cumplimiento'] = $this->porcentaje_cumplimiento;
-        $datosValidadosDC['meta_acumulada'] = $this->meta_acumulada;
+        $datosValidadosDC['meta_acumulada'] = $this->monto_acumulado_raw;
         $datosValidadosDC['tipo_compromiso_id'] = $this->tipo_compromiso_id;
         $datosValidadosDC['compromiso_id'] = $this->compromiso_id;
         $datosValidadosDC['presupuesto_ejercido'] = $this->presupuesto_ejercido_raw;
